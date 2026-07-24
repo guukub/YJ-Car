@@ -106,6 +106,7 @@ export default function QueueForm({ countToday, services, initialData, staffs }:
   }
 
   const selectCustomer = (customer: any) => {
+    setSearchQuery(customer.name);
     if (customerNameRef.current) customerNameRef.current.value = customer.name;
     if (customerPhoneRef.current) customerPhoneRef.current.value = customer.phone;
     if (lineIdRef.current) lineIdRef.current.value = customer.lineId || '';
