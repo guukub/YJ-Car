@@ -10,9 +10,13 @@ export default async function SettingsPage() {
 
   if (!settings) {
     settings = {
+      id: "default",
+      updatedAt: new Date(),
       shopName: "YJ Cars Detailing",
       promptPayId: "",
-      lineToken: ""
+      lineToken: "",
+      openTime: "08:00",
+      closeTime: "20:00"
     }
   }
 

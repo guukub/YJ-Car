@@ -8,7 +8,7 @@ export default async function AddQueuePage() {
 
   const today = new Date()
   today.setHours(0, 0, 0, 0)
-  const countToday = await prisma.job.count({
+  const countToday = await prisma.jobQueue.count({
     where: {
       date: {
         gte: today

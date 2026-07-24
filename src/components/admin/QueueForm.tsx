@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react"
 import { Car, User, Settings2, Save, Calendar, Image as ImageIcon, Plus, Trash2, Search, UserPlus, Phone, MessageCircle, Mail, Hash, MapPin, Gauge, Clock } from "lucide-react"
 import { createQueue, fullUpdateQueueJob } from "@/app/actions/queue"
-import { lookupCustomerByPhone, lookupVehicleByPlate, searchCustomers } from "@/app/actions/lookup"
+import { lookupCustomer, lookupVehicleByPlate, searchCustomers } from "@/app/actions/lookup"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 import { th } from "date-fns/locale"
