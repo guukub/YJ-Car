@@ -501,7 +501,7 @@ export default async function ReportsPage({
                 <table className="w-full text-xs text-left whitespace-nowrap">
                   <thead>
                     <tr className="bg-[#0A0A0A] text-[#E5B842] border border-[#222]">
-                      <th className="px-4 py-2 font-medium rounded-l-lg">เวลา</th>
+                      <th className="px-4 py-2 font-medium rounded-l-lg text-center">ลำดับ</th>
                       <th className="px-4 py-2 font-medium">ลูกค้า</th>
                       <th className="px-4 py-2 font-medium">ทะเบียน</th>
                       <th className="px-4 py-2 font-medium">ประเภทรถ</th>
@@ -515,7 +515,7 @@ export default async function ReportsPage({
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-[#222]">
-                    {jobs.map((job) => {
+                    {jobs.map((job, index) => {
                       const isPaid = job.amountPaid >= job.netPrice;
 
                       return (
@@ -523,8 +523,8 @@ export default async function ReportsPage({
                           key={job.id}
                           className="hover:bg-[#1a1a1a] transition-colors text-gray-300"
                         >
-                          <td className="px-4 py-3">
-                            {format(new Date(job.timeIn), "HH:mm")}
+                          <td className="px-4 py-3 text-center text-gray-400">
+                            {index + 1}
                           </td>
                           <td className="px-4 py-3 font-medium">
                             {job.customer.name}
