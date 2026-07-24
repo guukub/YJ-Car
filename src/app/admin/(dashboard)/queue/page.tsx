@@ -3,6 +3,7 @@ import { Plus, Edit2, Camera, Receipt } from "lucide-react"
 import Link from "next/link"
 import QuickPayButton from "@/components/admin/QuickPayButton"
 import QueueFilter from "@/components/admin/QueueFilter"
+import DeleteQueueButton from "@/components/admin/DeleteQueueButton"
 
 const STATUS_COLORS: Record<string, string> = {
   "WAITING": "bg-gray-100 text-gray-800",       // รอเข้ารับบริการ
@@ -171,6 +172,7 @@ export default async function QueuePage({ searchParams }: { searchParams: Promis
                         <Link href={`/admin/queue/${job.id}/receipt`} className="p-1.5 text-green-600 hover:bg-green-50 rounded border border-transparent hover:border-green-200 inline-block" title="พิมพ์ใบเสร็จ">
                           <Receipt className="w-4 h-4" />
                         </Link>
+                        <DeleteQueueButton jobId={job.id} />
                       </div>
                     </td>
                   </tr>

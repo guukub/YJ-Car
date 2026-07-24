@@ -445,3 +445,11 @@ export async function markAsPaid(jobId: string, method: string, amount: number) 
   revalidatePath("/admin/queue")
   revalidatePath("/admin")
 }
+
+export async function deleteJobQueue(jobId: string) {
+  await prisma.jobQueue.delete({
+    where: { id: jobId }
+  })
+  revalidatePath('/admin/queue')
+  revalidatePath('/admin')
+}
