@@ -1,0 +1,184 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// NextAuth Required Models
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  role          String    @default("STAFF")
+  accounts      Account[]
+  sessions      Session[]
+  jobsAssigned  JobQueue[] @relation("StaffJobs")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// Business Models
+
+model Customer {
+  id            String    @id @default(cuid())
+  name          String
+  phone         String    @unique
+  lineId        String?
+  email         String?
+  address       String?
+  totalSpent    Float     @default(0)
+  visitCount    Int       @default(0)
+  notes         String?
+  vehicles      Vehicle[]
+  jobs          JobQueue[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Vehicle {
+  id            String    @id @default(cuid())
+  licensePlate  String    @unique
+  brand         String
+  model         String
+  color         String
+  type          String // SEDAN, SUV, etc.
+  currentMileage String?
+  chassisNo     String?
+  customerId    String
+  customer      Customer  @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  jobs          JobQueue[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Service {
+  id            String    @id @default(cuid())
+  name          String
+  description   String?
+  price         Float
+  category      String    // e.g., WASH, COATING, INTERIOR
+  jobs          JobService[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model JobQueue {
+  id            String    @id @default(cuid())
+  queueNumber   Int       @unique
+  date          DateTime
+  timeIn        DateTime
+  appointmentAt DateTime?
+  status        String    @default("WAITING")
+  notes         String?
+  
+  customerId    String
+  customer      Customer  @relation(fields: [customerId], references: [id], onDelete: Restrict)
+  
+  vehicleId     String
+  vehicle       Vehicle   @relation(fields: [vehicleId], references: [id], onDelete: Restrict)
+  
+  staffId       String?
+  staff         User?     @relation("StaffJobs", fields: [staffId], references: [id], onDelete: SetNull)
+  
+  services      JobService[]
+  images        JobImage[]
+  
+  totalPrice    Float     @default(0)
+  discount      Float     @default(0)
+  netPrice      Float     @default(0)
+  
+  paymentStatus String    @default("UNPAID") // UNPAID, DEPOSIT, PAID
+  amountPaid    Float     @default(0)
+  paymentMethod String?   // CASH, TRANSFER
+  
+  warranty      String?   // Added for warranty period
+  warrantyEnd   DateTime? // Expiration date for warranty
+  isPromotion   Boolean   @default(false)
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model JobService {
+  id            String    @id @default(cuid())
+  jobId         String
+  job           JobQueue  @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  serviceId     String
+  service       Service   @relation(fields: [serviceId], references: [id], onDelete: Restrict)
+  priceAtTime   Float
+  
+  @@unique([jobId, serviceId])
+}
+
+model JobImage {
+  id            String    @id @default(cuid())
+  url           String
+  type          String    // BEFORE, AFTER, SCRATCH, RECEIPT
+  jobId         String
+  job           JobQueue  @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  createdAt     DateTime  @default(now())
+}
+
+model Expense {
+  id            String    @id @default(cuid())
+  category      String
+  amount        Float
+  date          DateTime
+  description   String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Setting {
+  id            String    @id @default("global")
+  promptPayId   String?
+  lineToken     String?
+  shopName      String    @default("YJ Cars Detailing")
+  openTime      String    @default("08:00")
+  closeTime     String    @default("20:00")
+  updatedAt     DateTime  @updatedAt
+}
