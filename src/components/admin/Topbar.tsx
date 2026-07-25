@@ -1,10 +1,13 @@
 import { Menu, User } from "lucide-react";
 
-export default function Topbar() {
+export default function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
   return (
     <header className="h-20 bg-[#0A0A0A] border-b border-gray-900 flex items-center justify-between px-6 sticky top-0 z-40">
       <div className="flex items-center gap-4">
-        <button className="lg:hidden text-gray-500 hover:text-[#E5B842] transition-colors">
+        <button 
+          onClick={onMenuClick}
+          className="lg:hidden text-gray-500 hover:text-[#E5B842] transition-colors"
+        >
           <Menu className="w-6 h-6" />
         </button>
       </div>

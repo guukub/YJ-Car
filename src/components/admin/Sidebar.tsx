@@ -42,12 +42,12 @@ const menuItems = [
   { name: 'ผู้ใช้งาน', icon: UserCircle, path: '/admin/users' },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ onClose }: { onClose?: () => void }) {
   const pathname = usePathname();
   const [openSubmenu, setOpenSubmenu] = useState<string | null>('บันทึกข้อมูล');
 
   return (
-    <aside className="w-[280px] bg-[#0A0A0A] min-h-screen text-gray-300 flex flex-col shrink-0 sticky top-0 overflow-y-auto border-r border-gray-900">
+    <aside className="w-[280px] bg-[#0A0A0A] h-screen text-gray-300 flex flex-col shrink-0 sticky top-0 overflow-y-auto border-r border-gray-900">
       {/* Logo Section */}
       <div className="p-6 flex flex-col items-center justify-center mb-2 mt-4 relative">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-32 bg-yellow-500/10 blur-[50px] rounded-full pointer-events-none"></div>
@@ -90,6 +90,7 @@ export default function Sidebar() {
               ) : (
                 <Link
                   href={item.path}
+                  onClick={() => onClose?.()}
                   className={`group relative w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300 ${
                     isActive 
                       ? 'bg-[#111] text-[#E5B842] border border-[#E5B842]/50 shadow-[0_0_15px_rgba(229,184,66,0.15)]' 
@@ -124,6 +125,7 @@ export default function Sidebar() {
                         <Link
                           key={sub.name}
                           href={sub.path}
+                          onClick={() => onClose?.()}
                           className={`group flex items-center justify-between pr-4 py-2.5 rounded-lg transition-all duration-200 ${
                             isSubActive 
                               ? 'text-[#E5B842] bg-white/5' 

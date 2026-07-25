@@ -271,11 +271,11 @@ export default async function ReportsPage({
   };
 
   return (
-    <div className="space-y-6 pb-12 bg-[#050505] -m-6 p-6 min-h-[calc(100vh-80px)]">
+    <div className="space-y-4 md:space-y-6 pb-12 bg-[#050505] -m-4 md:-m-6 p-4 md:p-6 min-h-[calc(100vh-80px)]">
       {/* Printable Area (Hidden on screen) */}
       <DailySummaryPrintable data={reportData} />
 
-      <div className="border border-[#E5B842]/30 rounded-3xl p-6 bg-[#0A0A0A] space-y-6">
+      <div className="border border-[#E5B842]/30 rounded-2xl md:rounded-3xl p-4 md:p-6 bg-[#0A0A0A] space-y-6">
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 print:hidden">
           <div>
@@ -286,8 +286,10 @@ export default async function ReportsPage({
             <p className="text-gray-400 mt-2 text-sm">{dateDisplay}</p>
           </div>
           <div className="flex flex-col md:flex-row items-start md:items-center gap-4 w-full md:w-auto">
-            <DailyReportFilter />
-            <div className="flex items-center gap-3 ml-auto">
+            <div className="w-full md:w-auto">
+              <DailyReportFilter />
+            </div>
+            <div className="flex items-center gap-3 w-full md:w-auto justify-end md:ml-auto border-t md:border-t-0 border-[#222] pt-4 md:pt-0 mt-2 md:mt-0">
               <PrintButton />
               <ExportPDFButton />
             </div>
@@ -299,7 +301,7 @@ export default async function ReportsPage({
           {/* LEFT COL: Net Revenue (Large) and Net Profit (Small) */}
           <div className="flex flex-col gap-6 lg:col-span-1">
             {/* Card 1: Net Revenue */}
-            <div className="bg-[#111] border border-[#E5B842] rounded-3xl p-6 shadow-[0_0_15px_rgba(229,184,66,0.1)] flex flex-col relative overflow-hidden flex-1">
+            <div className="bg-[#111] border border-[#E5B842] rounded-2xl md:rounded-3xl p-5 md:p-6 shadow-[0_0_15px_rgba(229,184,66,0.1)] flex flex-col relative overflow-hidden flex-1">
               <div className="absolute top-6 right-6 p-2 rounded-full border border-[#E5B842] text-[#E5B842] shadow-[0_0_15px_rgba(229,184,66,0.5)]">
                 <span className="font-bold text-xl px-1">฿</span>
               </div>
@@ -358,7 +360,7 @@ export default async function ReportsPage({
             </div>
 
             {/* Card 5: Net Profit (Bottom Left) */}
-            <div className="bg-[#111] border border-gray-800 rounded-3xl p-6 shadow-sm flex flex-col relative overflow-hidden">
+            <div className="bg-[#111] border border-gray-800 rounded-2xl md:rounded-3xl p-5 md:p-6 shadow-sm flex flex-col relative overflow-hidden">
               <div className="flex justify-between items-start mb-6">
                 <h3 className="text-[#E5B842] font-bold">กำไรสุทธิ</h3>
                 <div className="border border-[#E5B842] p-1.5 rounded-lg text-[#E5B842] shadow-[0_0_10px_rgba(229,184,66,0.3)]">
@@ -391,7 +393,7 @@ export default async function ReportsPage({
 
           {/* MIDDLE & RIGHT COLS */}
           <div className="flex flex-col gap-6 lg:col-span-2">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-[400px]">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:h-[400px]">
               {/* Card 2: Cars Serviced */}
               <div className="bg-[#111] border border-gray-800 rounded-3xl p-6 shadow-sm flex flex-col h-full">
                 <div className="flex justify-between items-start">
@@ -449,7 +451,7 @@ export default async function ReportsPage({
               </div>
 
               {/* Card 4: Expenses */}
-              <div className="bg-[#111] border border-gray-800 rounded-3xl p-6 shadow-sm flex flex-col h-full">
+              <div className="bg-[#111] border border-gray-800 rounded-2xl md:rounded-3xl p-5 md:p-6 shadow-sm flex flex-col h-full">
                 <div className="flex justify-between items-start mb-6">
                   <h3 className="text-gray-300 font-bold">ค่าใช้จ่าย</h3>
                   <div className="border border-[#E5B842] p-1.5 rounded-lg text-[#E5B842] shadow-[0_0_10px_rgba(229,184,66,0.2)]">
@@ -492,7 +494,7 @@ export default async function ReportsPage({
             </div>
 
             {/* Table: Today's Cars */}
-            <div className="bg-[#111] border border-gray-800 rounded-3xl p-6 shadow-sm flex-1 flex flex-col min-h-[300px]">
+            <div className="bg-[#111] border border-gray-800 rounded-2xl md:rounded-3xl p-5 md:p-6 shadow-sm flex-1 flex flex-col min-h-[300px]">
               <h3 className="text-[#E5B842] font-bold mb-4 flex items-center gap-2">
                 <div className="border border-[#E5B842] p-1 rounded-full text-[#E5B842] text-xs w-5 h-5 flex items-center justify-center shadow-[0_0_5px_rgba(229,184,66,0.3)]">+</div> รายการวันนี้
               </h3>
