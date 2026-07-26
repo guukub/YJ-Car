@@ -2,7 +2,7 @@
 
 import { Image as ImageIcon, Loader2 } from "lucide-react"
 import { useState } from "react"
-import html2canvas from "html2canvas"
+import { toPng } from "html-to-image"
 
 export default function ExportImageButton() {
   const [isExporting, setIsExporting] = useState(false)
@@ -16,34 +16,53 @@ export default function ExportImageButton() {
         return;
       }
 
-      const canvas = await html2canvas(element, {
-        // @ts-ignore - scale is a valid option in html2canvas but might be missing in @types
-        scale: 2, 
+      // Temporarily make the element visible but off-screen
+      const originalPosition = element.style.position
+      const originalLeft = element.style.left
+      const originalDisplay = element.style.display
+      const originalWidth = element.style.width
+      const originalPadding = element.style.padding
+
+      element.classList.remove('hidden')
+      element.classList.remove('print:block')
+      element.style.position = 'absolute'
+      element.style.left = '-9999px'
+      element.style.display = 'block'
+      element.style.width = '800px'
+      element.style.padding = '20px'
+
+      // wait a tiny bit for DOM to apply changes
+      await new Promise(resolve => setTimeout(resolve, 100))
+
+      const dataUrl = await toPng(element, { 
         backgroundColor: '#050505',
-        useCORS: true,
-        onclone: (clonedDoc: Document) => {
-          const clonedElement = clonedDoc.getElementById('print-area')
-          if (clonedElement) {
-            clonedElement.classList.remove('hidden')
-            clonedElement.classList.remove('print:block')
-            clonedElement.style.display = 'block'
-            clonedElement.style.width = '800px'
-            clonedElement.style.padding = '20px'
-            clonedElement.style.position = 'relative'
-          }
-        }
+        pixelRatio: 2, // equivalent to scale: 2
       })
 
-      const image = canvas.toDataURL("image/png")
-      
+      // Restore original state
+      element.style.position = originalPosition
+      element.style.left = originalLeft
+      element.style.display = originalDisplay
+      element.style.width = originalWidth
+      element.style.padding = originalPadding
+      element.classList.add('hidden')
+      element.classList.add('print:block')
+
       const link = document.createElement('a')
-      link.href = image
+      link.href = dataUrl
       link.download = `daily-report-${new Date().toISOString().split('T')[0]}.png`
       link.click()
 
     } catch (error) {
       console.error("Error generating image:", error)
-      alert("เกิดข้อผิดพลาดในการดาวน์โหลดรูปภาพ")
+      alert("เกิดข้อผิดพลาดในการดาวน์โหลดรูปภาพ ลองอีกครั้ง")
+      
+      // Attempt to restore state in case of error
+      const element = document.getElementById('print-area')
+      if (element) {
+        element.classList.add('hidden')
+        element.classList.add('print:block')
+      }
     } finally {
       setIsExporting(false)
     }
