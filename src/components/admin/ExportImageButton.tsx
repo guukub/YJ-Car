@@ -2,7 +2,7 @@
 
 import { Image as ImageIcon, Loader2 } from "lucide-react"
 import { useState } from "react"
-import { toPng } from "html-to-image"
+import { domToPng } from "modern-screenshot"
 
 export default function ExportImageButton() {
   const [isExporting, setIsExporting] = useState(false)
@@ -16,32 +16,40 @@ export default function ExportImageButton() {
         return;
       }
 
-      // Temporarily make the element visible but off-screen
+      // Temporarily make the element visible but place it behind content
       const originalPosition = element.style.position
-      const originalLeft = element.style.left
+      const originalZIndex = element.style.zIndex
       const originalDisplay = element.style.display
       const originalWidth = element.style.width
       const originalPadding = element.style.padding
 
       element.classList.remove('hidden')
       element.classList.remove('print:block')
+      
+      // Make it visible in DOM but positioned absolutely at the top, behind everything
       element.style.position = 'absolute'
-      element.style.left = '-9999px'
+      element.style.top = '0'
+      element.style.left = '0'
+      element.style.zIndex = '-9999'
       element.style.display = 'block'
       element.style.width = '800px'
       element.style.padding = '20px'
 
-      // wait a tiny bit for DOM to apply changes
-      await new Promise(resolve => setTimeout(resolve, 100))
+      // wait a tiny bit for DOM to apply changes and fonts/images to load
+      await new Promise(resolve => setTimeout(resolve, 200))
 
-      const dataUrl = await toPng(element, { 
+      const dataUrl = await domToPng(element, {
         backgroundColor: '#050505',
-        pixelRatio: 2, // equivalent to scale: 2
+        scale: 2,
+        features: {
+          // modern-screenshot options to improve compatibility
+          removeControlCharacter: false,
+        }
       })
 
       // Restore original state
       element.style.position = originalPosition
-      element.style.left = originalLeft
+      element.style.zIndex = originalZIndex
       element.style.display = originalDisplay
       element.style.width = originalWidth
       element.style.padding = originalPadding
