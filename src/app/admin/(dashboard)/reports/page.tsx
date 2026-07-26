@@ -13,7 +13,7 @@ import {
   Clock,
 } from "lucide-react";
 import PrintButton from "@/components/admin/PrintButton";
-import ExportPDFButton from "@/components/admin/ExportPDFButton";
+import ExportImageButton from "@/components/admin/ExportImageButton";
 import DailyReportFilter from "@/components/admin/DailyReportFilter";
 import DailySummaryPrintable, {
   DailyReportData,
@@ -291,7 +291,7 @@ export default async function ReportsPage({
             </div>
             <div className="flex items-center gap-3 w-full md:w-auto justify-end md:ml-auto border-t md:border-t-0 border-[#222] pt-4 md:pt-0 mt-2 md:mt-0">
               <PrintButton />
-              <ExportPDFButton />
+              <ExportImageButton />
             </div>
           </div>
         </div>
